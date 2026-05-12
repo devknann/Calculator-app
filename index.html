@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+
+    /* theme 1 */
+
+    --bg:hsl(222, 26%, 31%);
+    --toggle-bg:hsl(223, 31%, 20%);
+    --screen-bg:hsl(224, 36%, 15%);
+
+    --blue-btn:hsl(225, 21%, 49%);
+    --blue-shadow:hsl(224, 28%, 35%);
+
+    --red-btn:hsl(6, 63%, 50%);
+    --red-shadow:hsl(6, 70%, 34%);
+
+    --light-btn:hsl(0, 0%, 90%);
+    --light-shadow:hsl(28, 16%, 65%);
+
+    --text-dark:hsl(221, 14%, 31%);
+    --text-light:white;
+
+    --dot:hsl(6, 63%, 50%);
+}
+
+body[data-theme="2"]{
+
+    --bg:hsl(0, 0%, 90%);
+    --toggle-bg:hsl(0, 5%, 81%);
+    --screen-bg:hsl(0, 0%, 93%);
+
+    --blue-btn:hsl(185, 42%, 37%);
+    --blue-shadow:hsl(185, 58%, 25%);
+
+    --red-btn:hsl(25, 98%, 40%);
+    --red-shadow:hsl(25, 99%, 27%);
+
+    --light-btn:hsl(0, 0%, 90%);
+    --light-shadow:hsl(35, 11%, 61%);
+
+    --text-dark:hsl(60, 10%, 19%);
+    --text-light:white;
+
+    --dot:hsl(25, 98%, 40%);
+}
+
+body[data-theme="3"]{
+
+    --bg:hsl(268, 75%, 9%);
+    --toggle-bg:hsl(268, 71%, 12%);
+    --screen-bg:hsl(268, 71%, 12%);
+
+    --blue-btn:hsl(281, 89%, 26%);
+    --blue-shadow:hsl(285, 91%, 52%);
+
+    --red-btn:hsl(176, 100%, 44%);
+    --red-shadow:hsl(177, 92%, 70%);
+
+    --light-btn:hsl(268, 47%, 21%);
+    --light-shadow:hsl(290, 70%, 36%);
+
+    --text-dark:hsl(52, 100%, 62%);
+    --text-light:hsl(52, 100%, 62%);
+
+    --dot:hsl(176, 100%, 44%);
+}
+
+body{
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:var(--bg);
+
+    font-family:'League Spartan', sans-serif;
+
+    padding:20px;
+}
+
+.container{
+
+    width:100%;
+    max-width:450px;
+}
+
+.header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+
+    margin-bottom:25px;
+}
+
+.title{
+
+    color:var(--text-light);
+    font-size:32px;
+}
+
+.theme{
+
+    display:flex;
+    align-items:end;
+    gap:20px;
+}
+
+.theme p{
+
+    color:var(--text-light);
+    font-size:12px;
+    letter-spacing:1px;
+    margin-bottom:5px;
+}
+
+.theme-box{
+
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.numbers{
+
+    display:flex;
+    justify-content:space-around;
+
+    color:var(--text-light);
+    font-size:12px;
+}
+
+.toggle{
+
+    width:70px;
+    height:26px;
+
+    background:var(--toggle-bg);
+
+    border-radius:20px;
+
+    position:relative;
+
+    cursor:pointer;
+}
+
+.circle{
+
+    width:16px;
+    height:16px;
+
+    border-radius:50%;
+
+    background:var(--dot);
+
+    position:absolute;
+
+    top:5px;
+    left:5px;
+
+    transition:0.2s;
+}
+
+body[data-theme="2"] .circle{
+
+    left:27px;
+}
+
+body[data-theme="3"] .circle{
+
+    left:49px;
+}
+
+.screen{
+
+    width:100%;
+
+    min-height:100px;
+
+    background:var(--screen-bg);
+
+    border-radius:10px;
+
+    padding:20px;
+
+    margin-bottom:20px;
+
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+
+    overflow:hidden;
+}
+
+#display{
+
+    color:var(--text-light);
+
+    font-size:50px;
+}
+
+.keypad{
+
+    background:var(--toggle-bg);
+
+    padding:20px;
+
+    border-radius:10px;
+
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+
+    gap:15px;
+}
+
+button{
+
+    border:none;
+
+    height:60px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-family:'League Spartan', sans-serif;
+
+    font-size:32px;
+    font-weight:700;
+
+    background:var(--light-btn);
+
+    color:var(--text-dark);
+
+    box-shadow:0 4px var(--light-shadow);
+}
+
+button:active{
+
+    transform:translateY(3px);
+
+    box-shadow:none;
+}
+
+.blue{
+
+    background:var(--blue-btn);
+
+    color:white;
+
+    box-shadow:0 4px var(--blue-shadow);
+
+    font-size:20px;
+}
+
+.red{
+
+    background:var(--red-btn);
+
+    color:white;
+
+    box-shadow:0 4px var(--red-shadow);
+}
+
+.reset{
+
+    grid-column:span 2;
+}
+
+.equal{
+
+    grid-column:span 2;
+}
+
+@media(max-width:500px){
+
+    .keypad{
+
+        gap:10px;
+    }
+
+    button{
+
+        height:55px;
+
+        font-size:26px;
+    }
+
+    #display{
+
+        font-size:40px;
+    }
+}
+
+</style>
+</head>
+
+<body data-theme="1">
+
+<div class="container">
+
+    <div class="header">
+
+        <h1 class="title">calc</h1>
+
+        <div class="theme">
+
+            <p>THEME</p>
+
+            <div class="theme-box">
+
+                <div class="numbers">
+
+                    <span onclick="setTheme(1)">1</span>
+                    <span onclick="setTheme(2)">2</span>
+                    <span onclick="setTheme(3)">3</span>
+
+                </div>
+
+                <div class="toggle" onclick="changeTheme()">
+
+                    <div class="circle"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="screen">
+
+        <h2 id="display">0</h2>
+
+    </div>
+
+    <div class="keypad">
+
+        <button onclick="input('7')">7</button>
+        <button onclick="input('8')">8</button>
+        <button onclick="input('9')">9</button>
+        <button class="blue" onclick="del()">DEL</button>
+
+        <button onclick="input('4')">4</button>
+        <button onclick="input('5')">5</button>
+        <button onclick="input('6')">6</button>
+        <button onclick="input('+')">+</button>
+
+        <button onclick="input('1')">1</button>
+        <button onclick="input('2')">2</button>
+        <button onclick="input('3')">3</button>
+        <button onclick="input('-')">-</button>
+
+        <button onclick="input('.')">.</button>
+        <button onclick="input('0')">0</button>
+        <button onclick="input('/')">/</button>
+        <button onclick="input('*')">x</button>
+
+        <button class="blue reset" onclick="resetCalc()">RESET</button>
+
+        <button class="red equal" onclick="calculate()">=</button>
+
+    </div>
+
+</div>
+
+<script>
+
+let display = document.getElementById("display");
+
+let current = "";
+
+let theme = 1;
+
+function input(value){
+
+    if(display.textContent === "0"){
+
+        current = value;
+
+    }else{
+
+        current += value;
+    }
+
+    display.textContent = current;
+}
+
+function calculate(){
+
+    try{
+
+        let result = eval(current);
+
+        display.textContent = result;
+
+        current = result.toString();
+
+    }catch{
+
+        display.textContent = "Error";
+
+        current = "";
+    }
+}
+
+function resetCalc(){
+
+    current = "";
+
+    display.textContent = "0";
+}
+
+function del(){
+
+    current = current.slice(0,-1);
+
+    if(current === ""){
+
+        display.textContent = "0";
+
+    }else{
+
+        display.textContent = current;
+    }
+}
+
+function setTheme(num){
+
+    theme = num;
+
+    document.body.setAttribute("data-theme", num);
+}
+
+function changeTheme(){
+
+    theme++;
+
+    if(theme > 3){
+
+        theme = 1;
+    }
+
+    document.body.setAttribute("data-theme", theme);
+}
+
+document.addEventListener("keydown", function(e){
+
+    if(e.key >= 0 && e.key <= 9){
+
+        input(e.key);
+    }
+
+    if(e.key === "+"){
+
+        input("+");
+    }
+
+    if(e.key === "-"){
+
+        input("-");
+    }
+
+    if(e.key === "/"){
+
+        input("/");
+    }
+
+    if(e.key === "*"){
+
+        input("*");
+    }
+
+    if(e.key === "."){
+
+        input(".");
+    }
+
+    if(e.key === "Enter"){
+
+        calculate();
+    }
+
+    if(e.key === "Backspace"){
+
+        del();
+    }
+
+    if(e.key === "Escape"){
+
+        resetCalc();
+    }
+});
+
+</script>
+
+</body>
+</html>
